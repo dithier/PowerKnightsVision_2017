@@ -7,4 +7,4 @@ Created on Sat Jan 14 15:00:56 2017
 Main file using one image and performing vision processsing to find the peg
 """
 
-directory = 'temp'
+directory = 'tempdir'
