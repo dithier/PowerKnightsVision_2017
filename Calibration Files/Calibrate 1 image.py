@@ -14,7 +14,7 @@ filename = directory + 'imageValues.npz'
 
 # Picture to Calibrate
 directory = 'C:/Users/Ithier/Documents/FIRST/2017/Vision Images/Vision Images/LED Peg/'
-fileName = '1ftH3ftD0Angle0Brightness.jpg'
+fileName = '10.jpg'
 picture = directory + fileName
 
 img = cv2.imread(picture, 1)
