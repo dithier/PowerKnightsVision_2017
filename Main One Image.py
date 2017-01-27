@@ -13,7 +13,7 @@ import findTarget as FT
 
 # directory for img
 directory = 'C:/Users/Ithier/Documents/FIRST/2017/Practice Code/Vision Images/Vision Images/LED Peg/Numbered/'
-fileName = '13.jpg'
+fileName = '1.jpg'
 picture = directory + fileName
 
 # directory for npz file
