@@ -13,7 +13,7 @@ import HSVTrackbarModuleMultiple as Trackbar
 imstart = 1
 
 # Directory of file containing initial threshold values
-directory = 'C:/Users/Driver/Desktop/OpenCV/StrongHold Code_Driver Station Version v2/' # folder npz file is in
+directory = 'C:/Users/Ithier/Documents/FIRST/2017/PowerKnightsVision_2017/Calibration Files/' # folder npz file is in
 filename = directory + 'imageValues.npz'
 
 # Calibrate
