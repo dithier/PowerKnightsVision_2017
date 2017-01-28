@@ -89,7 +89,7 @@ def findValidTarget(image, mask):
     maxArea = 100^6 # need to calculate good values for min and max area
     BFR_img = np.copy(image)
     numContours = 41
-    counter = 0
+    count = 0
     
     # find contours
     _, contours, hierarchy = cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
@@ -107,10 +107,13 @@ def findValidTarget(image, mask):
     areas = np.array(areas)
     area_indices = np.argsort(areas)
     
-    while goodTarget < 2 and counter == 0:
-        if len(areas) > 0:
-            # Check for validity of contours in order of largest area to smallest
-            for i in reversed(area_indices):
+    
+    if len(areas) > 0:
+        # Check for validity of contours in order of largest area to smallest
+        for i in reversed(area_indices):
+            if count == 1:
+                break
+            while goodTarget < 2 and count == 0:
                 # Find BFR
                 box, hull_indiv, corners, BFR_img = MI.bestFitRect(BFR_img, biggestContours[i])
                 
@@ -128,13 +131,10 @@ def findValidTarget(image, mask):
                         hull.append(hull_indiv)
                         Rect_coor.append(Rect_coor_indiv)
                         goodTarget += 1
-                    
-                # break out of while loop if at end of area
-                if i == area_indices[0]:
-                    counter = 1
+                        
+                if i == area_indices[0] or goodTarget == 2:
+                    count = 1
                 
-        else:
-            break 
         
     if len(cnt) == 2:
         valid = True

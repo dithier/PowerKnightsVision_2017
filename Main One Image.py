@@ -13,12 +13,13 @@ import findTarget as FT
 
 # directory for img
 directory = 'C:/Users/Ithier/Documents/FIRST/2017/Practice Code/Vision Images/Vision Images/LED Peg/Numbered/'
-fileName = '1.jpg'
+fileName = '6.jpg'
 picture = directory + fileName
 
 # directory for npz file
 directory = 'C:/Users/Ithier/Documents/FIRST/2017/PowerKnightsVision_2017/Calibration Files/' # folder npz file is in
-filename = directory + 'imageValues_1ftH3ftD0Angle0Brightness.npz'
+#filename = directory + 'imageValues_1ftH3ftD0Angle0Brightness.npz'
+filename = directory + 'imageValuesMulti.npz'
 
 original = cv2.imread(picture)
 
