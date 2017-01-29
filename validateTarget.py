@@ -110,7 +110,9 @@ def findValidTarget(image, mask):
     
     if len(areas) > 0:
         # Check for validity of contours in order of largest area to smallest
-        for i in reversed(area_indices):
+        rev_indices = list(reversed(area_indices))
+        ind = 0
+        for i in rev_indices:
             if count == 1:
                 break
             while goodTarget < 2 and count == 0:
@@ -134,6 +136,8 @@ def findValidTarget(image, mask):
                         
                 if i == area_indices[0] or goodTarget == 2:
                     count = 1
+                    
+                i = rev_indices[ind + 1]
                 
         
     if len(cnt) == 2:

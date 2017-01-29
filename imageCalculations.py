@@ -15,8 +15,8 @@ def findAnglePeg(image, cx1, cx2):   ############### NEED TO UPDATE VARIABLES ##
     global horizontal_cameraFOV, vertical_cameraFOV 
     global h,w,c
     global font
-    horizontal_cameraFOV = 47.0 # Need to adjust based on camera
-    vertical_cameraFOV = 36.5
+    horizontal_cameraFOV = 61 # degrees
+    vertical_cameraFOV = 34.3 # degrees
     
     cx = (cx1 + cx2) / 2.0
     
