@@ -4,8 +4,7 @@ Created on Sun Jan 22 11:25:28 2017
 
 @author: Ithier
 
-Analyze one image at a time
-"""
+Analyze one image at a time"""
 
 import cv2 
 import findTarget as FT
@@ -13,7 +12,7 @@ import findTarget as FT
 
 # directory for img
 directory = 'C:/Users/Ithier/Documents/FIRST/2017/Practice Code/Vision Images/Vision Images/LED Peg/Numbered/'
-fileName = '16.jpg'
+fileName = '3.jpg'
 picture = directory + fileName
 
 # directory for npz file
