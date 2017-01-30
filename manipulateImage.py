@@ -36,7 +36,7 @@ def bestFitRect(img_orig, cnt):
         x,y = i.ravel()
         cv2.circle(img_orig, (x,y), 5, (255, 0, 255), -1)
     """
-    return box, corners, img_orig
+    return box, hull, corners, img_orig
     
 def drawBFR(img_orig, box, corners):
     # Load original image and draw BFR and corners

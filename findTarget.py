@@ -42,7 +42,7 @@ def findValids(img_orig, filename):
     ret,maskc = cv2.threshold(maskc,127,255,0)
     
     # Determine if there are any valid targets
-    valid, cnt, Rect_coor, BFR_img = VT.findValidTarget(img, mask)
+    valid, cnt, Rect_coor, BFR_img, hull = VT.findValidTarget(img, mask)
 
     if valid: 
         validUpdate = True
