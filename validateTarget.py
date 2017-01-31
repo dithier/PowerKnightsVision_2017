@@ -11,6 +11,25 @@ import numpy as np
 from heapq import nlargest
 import imageCalculations as IC
 import manipulateImage as MI
+import math
+
+def checkCornerDist(Rect_coor1, Rect_coor2):
+    threshold = 10
+    def distance(a1, a2, b1, b2):
+        return math.sqrt((a2 - a1)**2 + (b2 - b1)**2)
+    
+    for i in range(0,len(Rect_coor1)):
+        a1 = Rect_coor1[i][0]
+        b1 = Rect_coor1[i][1]
+        a2 = Rect_coor2[i][0]
+        b2 = Rect_coor2[i][1]
+        d = distance(a1, a2, b1, b2)
+        if d < threshold:
+            return False
+    
+    return True
+    
+    
 
 def isValidShapePeg(hull):
     matchThreshold = 0.198
@@ -88,7 +107,7 @@ def findValidTarget(image, mask):
     minArea = 1 # need to calculate good values for min and max area
     maxArea = 100^6 # need to calculate good values for min and max area
     BFR_img = np.copy(image)
-    numContours = 41
+    numContours = 20
     count = 0
     
     # find contours
@@ -112,7 +131,8 @@ def findValidTarget(image, mask):
         # Check for validity of contours in order of largest area to smallest
         rev_indices = list(reversed(area_indices))
         ind = 0
-        for i in rev_indices:
+        i = rev_indices[0]
+        for n in range(0, len(rev_indices)):
             if count == 1:
                 break
             while goodTarget < 2 and count == 0:
@@ -126,6 +146,10 @@ def findValidTarget(image, mask):
                     # Determine if contour meets specs
                     appropriateCnt = isValid(hull_indiv, Rect_coor_indiv)
                     
+                    # If valid already exists check it's not double counting
+                    if len(Rect_coor) != 0:
+                        appropriateCnt = checkCornerDist(Rect_coor_indiv, Rect_coor[0])
+                    
                     if appropriateCnt:
                         print "i is Valid: " + str(i)
                         MI.drawBFR(BFR_img, box, corners)
@@ -136,8 +160,10 @@ def findValidTarget(image, mask):
                         
                 if i == area_indices[0] or goodTarget == 2:
                     count = 1
-                    
-                i = rev_indices[ind + 1]
+                    ind = 0
+                
+                ind += 1
+                i = rev_indices[ind]
                 
         
     if len(cnt) == 2:
@@ -153,7 +179,7 @@ def findValidTarget(image, mask):
     return valid, cnt, Rect_coor, BFR_img, hull
     
         
-        
+    
         
         
         
