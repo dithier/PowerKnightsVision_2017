@@ -124,16 +124,16 @@ def findValidTarget(image, mask):
             #if minArea < contourArea < maxArea:
             areas.append(contourArea) 
     areas = np.array(areas)
-    area_indices = np.argsort(areas)
+    area_indices = np.argsort(areas) # gives indices of smallest to largest contours in biggestContours
     
     
     if len(areas) > 0:
         # Check for validity of contours in order of largest area to smallest
-        rev_indices = list(reversed(area_indices))
-        ind = 0
-        i = rev_indices[0]
+        rev_indices = list(reversed(area_indices)) #gives indices of largest to smallest contours in biggestContours
+        ind = 0 # keeps track of what index we're on within the index list rev_indices
+        i = rev_indices[0] # index of biggestContours that we're testing
         for n in range(0, len(rev_indices)):
-            if count == 1:
+            if count == 1: # count determines whether we stay in the while loop or not as does whether we've found 2 "good targets"
                 break
             while goodTarget < 2 and count == 0:
                 # Find BFR
@@ -158,7 +158,7 @@ def findValidTarget(image, mask):
                         Rect_coor.append(Rect_coor_indiv)
                         goodTarget += 1
                         
-                if i == area_indices[0] or goodTarget == 2:
+                if i == area_indices[0] or goodTarget == 2: # if we've reached the end of our index list or we've found two good targets 
                     count = 1
                     ind = 0
                 
