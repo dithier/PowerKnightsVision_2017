@@ -91,6 +91,7 @@ count = 0
 check = 0
 BFR_img = original
 firstTime = True
+thresholdB = 10
 
  # find contours
 _, contours, hierarchy = cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
@@ -151,7 +152,16 @@ if len(areas) > 0:
                             BFR_img = cv2.line(BFR_img,(Rect_coor[1][0],Rect_coor[1][1]), (Rect_coor[2][0],Rect_coor[2][1]), (0,255,0), 2)
                             BFR_img = cv2.line(BFR_img,(newCoorT,Rect_coor[1][1]), (newCoorB,Rect_coor[2][1]), (0,255,0), 2)
                             boundingBox = [[newCoorT, Rect_coor[1][1]], [Rect_coor[1][0], Rect_coor[1][1]], [Rect_coor[2][0], Rect_coor[2][1]], [newCoorB, Rect_coor[2][1]]]
-                        
+                            
+                       # Make buffered bounding box
+                        boundingBox[0][0] -= thresholdB
+                        boundingBox[0][1] -= thresholdB
+                        boundingBox[1][0] += thresholdB
+                        boundingBox[1][1] -= thresholdB
+                        boundingBox[2][0] += thresholdB
+                        boundingBox[2][1] += thresholdB
+                        boundingBox[3][0] -= thresholdB
+                        boundingBox[3][1] += thresholdB
                         
                         appropriateCnt = True 
                         firstTime = False

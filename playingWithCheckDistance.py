@@ -38,7 +38,6 @@ def checkCornerDist(rectCoor):
     
     # Go through everything in rectCoor and compare distances
     c = itertools.combinations(rectCoor,2)
-
     for i in c:
         lengths(i[0],i[1])
   
@@ -49,9 +48,16 @@ checkCornerDist(Rect)
 ################################################################################
 # Find larger contour in overlaps and accept that one
 areaOverlap = []
-for overlap in overlaps:
-    area1 = cv2.contourArea(np.array(overlap[0]))
-    area2 = cv2.contourArea(np.array(overlap[1]))
+cnt2Keep = []
+for i in range(0,len(overlaps)):
+    area1 = cv2.contourArea(np.array(overlaps[i][0]))
+    area2 = cv2.contourArea(np.array(overlaps[i][1]))
+    if area1 > area2:
+        cnt2Keep.append(overlaps[i][0])
+    elif area2 > area1:
+        cnt2Keep.append(overlaps[i][1])
+    else:
+        cnt2Keep.append(overlaps[i][0])
         
         
         
