@@ -67,11 +67,10 @@ def findLength(h,w):
 def checkCornerDist(rectCoor):
     threshold = 10
     def distance(Rect_coor1, Rect_coor2):
-        for i in range(0,len(Rect_coor1)):
-            a1 = Rect_coor1[i][0]
-            b1 = Rect_coor1[i][1]
-            a2 = Rect_coor2[i][0]
-            b2 = Rect_coor2[i][1]
+        a1 = Rect_coor1[i][0]
+        b1 = Rect_coor1[i][1]
+        a2 = Rect_coor2[i][0]
+        b2 = Rect_coor2[i][1]
         return math.sqrt((a2 - a1)**2 + (b2 - b1)**2)
     
     # Go through everything in rectCoor and compare distances
@@ -87,7 +86,7 @@ def checkCornerDist(rectCoor):
 areas = []
 rectCoor = []
 COOR = []
-numContours = 5
+numContours = 10
 count = 0
 check = 0
 BFR_img = original
@@ -168,12 +167,12 @@ if len(areas) > 0:
                         print "Rect coor:" + str(Rect_coor)
                         COOR.append(Rect_coor)
                         MI.drawBFR(BFR_img, box, corners)
-                        """
+                        
                         cv2.namedWindow('pic', cv2.WINDOW_NORMAL)
                         cv2.imshow('pic', BFR_img)
                         if cv2.waitKey(0) & 0xFF == ord('q'):
                             cv2.destroyAllWindows
-                        """
+                        
                         
                         
                     
