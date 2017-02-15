@@ -52,16 +52,8 @@ def isValidShapePeg(hull):
         return True
     else:
         return False
-    
 
-def isValidARPeg(Rect_coor):
-    minAR = 0.32
-    maxAR = 0.493
-    ''' Note on coordinate system: The top left corner of the target is Rect_coor[0], the top right is Rect_coor[1],
-    the bottom right is Rect_coor[2], and the bottom left is Rect_coor[3]. The second index determines whether it is an
-    x or y coordinate. Ex, Rect_coor[1][0] is the x value of the top right corner of the target while Rect_coor[1][1] is
-    the y coordinate for the top right corner.
-    '''
+def avgPxlLengths(Rect_coor):
     w1 = Rect_coor[1][0] - Rect_coor[0][0]
     w2 = Rect_coor[2][0] - Rect_coor[3][0]
     w = (w1 + w2)/2.0 # average width of rectangle based on both sides
@@ -71,6 +63,18 @@ def isValidARPeg(Rect_coor):
     h = (h1 + h2)/2.0 # average height of rectangle based on both sides
     
     aspect_ratio = float(w)/h
+    
+    return aspect_ratio, h, w
+
+def isValidARPeg(Rect_coor):
+    minAR = 0.32
+    maxAR = 0.493
+    ''' Note on coordinate system: The top left corner of the target is Rect_coor[0], the top right is Rect_coor[1],
+    the bottom right is Rect_coor[2], and the bottom left is Rect_coor[3]. The second index determines whether it is an
+    x or y coordinate. Ex, Rect_coor[1][0] is the x value of the top right corner of the target while Rect_coor[1][1] is
+    the y coordinate for the top right corner.
+    '''
+    aspect_ratio, h, w = avgPxlLengths(Rect_coor)
     print "AR: " + str(aspect_ratio)
     
     # Real aspect ratio is 2"/5" = 0.4 (used dimensions from target) 
@@ -79,11 +83,10 @@ def isValidARPeg(Rect_coor):
     else:
         return True
         
-        
 
 def isValid(hull, Rect_coor):
     valid1 = isValidARPeg(Rect_coor)
-    valid2 = isValidShapePeg(hull)
+    valid2= isValidShapePeg(hull)
     
     if valid1 == False or valid2 == False:
         return False

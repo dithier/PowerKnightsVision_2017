@@ -8,6 +8,7 @@ Created on Sat Feb 11 15:25:11 2017
 import numpy as np
 import cv2
 import manipulateImage as MI
+import imageCalculations as IC
 from heapq import nlargest
 
 ############################ LOAD IMAGE ##################################
@@ -15,7 +16,7 @@ from heapq import nlargest
 # directory for img
 #directory = 'C:/Users/Ithier/Documents/FIRST/2017/Practice Code/Vision Images/Vision Images/LED Peg/Numbered/'
 directory = 'C:/Users/Ithier/Documents/FIRST/2017/Pics/'
-fileName = '6.jpeg'
+fileName = '10.jpeg'
 picture = directory + fileName
 
 # directory for npz file
@@ -84,6 +85,11 @@ if len(areas) > 0:
         while count == 0:
             # Find BFR
             box, hull_indiv, corners, BFR_img = MI.bestFitRect(BFR_img, biggestContours[i])
+            if len(corners) == 4:
+                    # Organize corners
+                    Rect_coor_indiv = IC.organizeCorners(corners)
+                    
+            print "Rect coor:" + str(Rect_coor_indiv)
             
             MI.drawBFR(BFR_img, box, corners)
             cv2.imshow('pic', BFR_img)

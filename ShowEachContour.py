@@ -22,7 +22,7 @@ from heapq import nlargest
 # directory for img
 #directory = 'C:/Users/Ithier/Documents/FIRST/2017/Practice Code/Vision Images/Vision Images/LED Peg/Numbered/'
 directory = 'C:/Users/Ithier/Documents/FIRST/2017/Pics/'
-fileName = '6.jpeg'
+fileName = '10.jpeg'
 picture = directory + fileName
 
 # directory for npz file

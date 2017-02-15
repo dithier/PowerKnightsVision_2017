@@ -13,7 +13,7 @@ import findTarget as FT
 
 # directory for img
 directory = 'C:/Users/Ithier/Documents/FIRST/2017/Pics/'
-fileName = '11.jpeg'
+fileName = '10.jpeg'
 picture = directory + fileName
 
 directorysave = 'C:/Users/Ithier/Documents/FIRST/2017/AnalyzedV1/'
