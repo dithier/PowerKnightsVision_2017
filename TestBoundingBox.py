@@ -15,7 +15,7 @@ import math
 
 ############################ LOAD IMAGE ##################################
 
-validLeft = True # is the valid target on the left or right
+validLeft = False # is the valid target on the left or right
 
 # directory for img
 #directory = 'C:/Users/Ithier/Documents/FIRST/2017/Practice Code/Vision Images/Vision Images/LED Peg/Numbered/'
@@ -76,7 +76,7 @@ def checkCornerDist(rectCoor):
     
     # Go through everything in rectCoor and compare distances
     for i in range(0, len(rectCoor)):
-        dist = checkCornerDist(rectCoor[0], rectCoor[i + 1])
+        dist = distance(rectCoor[0], rectCoor[i + 1])
         if dist < threshold:
             return False
     return True
@@ -131,22 +131,33 @@ if len(areas) > 0:
                         length = findLength(h,w)
                         
                         if validLeft:
+                            # calculate length
                             newCoorT = int(Rect_coor[0][0] + length)
                             newCoorB = int(Rect_coor[3][0] + length)
+                            # Draw horizontal lines
+                            BFR_img = cv2.line(BFR_img,(Rect_coor[0][0],Rect_coor[0][1]), (newCoorT,Rect_coor[0][1]), (0,255,0), 2)
+                            BFR_img = cv2.line(BFR_img,(Rect_coor[3][0],Rect_coor[3][1]), (newCoorB,Rect_coor[3][1]), (0,255,0), 2)
+                            # Draw vertical lines
+                            BFR_img = cv2.line(BFR_img,(Rect_coor[0][0],Rect_coor[0][1]), (Rect_coor[3][0],Rect_coor[3][1]), (0,255,0), 2)
+                            BFR_img = cv2.line(BFR_img,(newCoorT,Rect_coor[0][1]), (newCoorB,Rect_coor[3][1]), (0,255,0), 2)
                         else:
-                            newCoorT = int(Rect_coor[0][0] - length)
-                            newCoorB = int(Rect_coor[3][0] - length)
-                        BFR_img = cv2.line(BFR_img,(Rect_coor[0][0],Rect_coor[0][1]), (newCoorT,Rect_coor[0][1]), (0,255,0), 2)
-                        BFR_img = cv2.line(BFR_img,(Rect_coor[3][0],Rect_coor[3][1]), (newCoorB,Rect_coor[3][1]), (0,255,0), 2)
+                            # calculate length
+                            newCoorT = int(Rect_coor[1][0] - length)
+                            newCoorB = int(Rect_coor[2][0] - length)
+                            # Draw horizontal lines
+                            BFR_img = cv2.line(BFR_img,(Rect_coor[1][0],Rect_coor[1][1]), (newCoorT,Rect_coor[1][1]), (0,255,0), 2)
+                            BFR_img = cv2.line(BFR_img,(Rect_coor[2][0],Rect_coor[2][1]), (newCoorB,Rect_coor[2][1]), (0,255,0), 2)
+                            # Draw vertical lines
+                            BFR_img = cv2.line(BFR_img,(Rect_coor[1][0],Rect_coor[1][1]), (Rect_coor[2][0],Rect_coor[2][1]), (0,255,0), 2)
+                            BFR_img = cv2.line(BFR_img,(newCoorT,Rect_coor[1][1]), (newCoorB,Rect_coor[2][1]), (0,255,0), 2)
+                        
+                        
                         appropriateCnt = True 
                         firstTime = False
                     
                     
                     if len(Rect_coor) == 4 and check == 1:
                         appropriateCnt = checkCornerDist(rectCoor)
-                    
-                   
-                    
                     
                     check = 1 # should from now on check for corner distance
                     
@@ -160,6 +171,7 @@ if len(areas) > 0:
                         if cv2.waitKey(0) & 0xFF == ord('q'):
                             cv2.destroyAllWindows
                         """
+                        
                         
                     
             if i == area_indices[0]:
