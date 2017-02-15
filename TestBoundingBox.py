@@ -15,7 +15,7 @@ import math
 
 ############################ LOAD IMAGE ##################################
 
-validLeft = False # is the valid target on the left or right
+validLeft = True # is the valid target on the left or right
 
 # directory for img
 #directory = 'C:/Users/Ithier/Documents/FIRST/2017/Practice Code/Vision Images/Vision Images/LED Peg/Numbered/'
@@ -140,6 +140,7 @@ if len(areas) > 0:
                             # Draw vertical lines
                             BFR_img = cv2.line(BFR_img,(Rect_coor[0][0],Rect_coor[0][1]), (Rect_coor[3][0],Rect_coor[3][1]), (0,255,0), 2)
                             BFR_img = cv2.line(BFR_img,(newCoorT,Rect_coor[0][1]), (newCoorB,Rect_coor[3][1]), (0,255,0), 2)
+                            boundingBox = [[Rect_coor[0][0], Rect_coor[0][1]], [newCoorT, Rect_coor[0][1]], [newCoorB, Rect_coor[3][1]], [Rect_coor[3][0], Rect_coor[3][1]]]
                         else:
                             # calculate length
                             newCoorT = int(Rect_coor[1][0] - length)
@@ -150,14 +151,16 @@ if len(areas) > 0:
                             # Draw vertical lines
                             BFR_img = cv2.line(BFR_img,(Rect_coor[1][0],Rect_coor[1][1]), (Rect_coor[2][0],Rect_coor[2][1]), (0,255,0), 2)
                             BFR_img = cv2.line(BFR_img,(newCoorT,Rect_coor[1][1]), (newCoorB,Rect_coor[2][1]), (0,255,0), 2)
+                            boundingBox = [[newCoorT, Rect_coor[1][1]], [Rect_coor[1][0], Rect_coor[1][1]], [Rect_coor[2][0], Rect_coor[2][1]], [newCoorB, Rect_coor[2][1]]]
                         
                         
                         appropriateCnt = True 
                         firstTime = False
                     
-                    
+                    """
                     if len(Rect_coor) == 4 and check == 1:
                         appropriateCnt = checkCornerDist(rectCoor)
+                    """
                     
                     check = 1 # should from now on check for corner distance
                     
