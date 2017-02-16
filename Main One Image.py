@@ -12,20 +12,25 @@ import findTarget as FT
 ############################ LOAD IMAGE ##################################
 
 # directory for img
+
 directory = 'C:/Users/Ithier/Documents/FIRST/2017/Pics/'
-fileName = '10.jpeg'
+fileName = '6.jpeg'
 picture = directory + fileName
 
 directorysave = 'C:/Users/Ithier/Documents/FIRST/2017/AnalyzedV1/'
 picturesave = directorysave + fileName
 
-"""
+
+
 # directory for npz file
-directory = 'C:/Users/Ithier/Documents/FIRST/2017/PowerKnightsVision_2017/Calibration Files/' # folder npz file is in
+#directory = 'C:/Users/Ithier/Documents/FIRST/2017/PowerKnightsVision_2017/Calibration Files/' # folder npz file is in
 #filename = directory + 'imageValues_1ftH3ftD0Angle0Brightness.npz'
-filename = directory + 'imageValues_1ftH3ftD0Angle0Brightness.npz'
-"""
+#filename = directory + 'imageValues_1ftH3ftD0Angle0Brightness.npz'
+
 filename = 'imageValuesMultiAttempt1.npz'
+#dir2 = 'C:/Users/Ithier/Documents/FIRST/2017/Practice Code/Vision Images/Vision Images/LED Peg/Numbered/'
+#picture = dir2 + '1.jpg'
+
 
 original = cv2.imread(picture)
 
@@ -47,7 +52,7 @@ except:
 cv2.imshow('mask', mask)
 cv2.imshow('Analyzed', BFR_img)
 cv2.imshow('original', original)
-cv2.imwrite(picturesave, BFR_img)
+#cv2.imwrite(picturesave, BFR_img)
 
 
 

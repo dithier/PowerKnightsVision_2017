@@ -12,6 +12,7 @@ from heapq import nlargest
 import imageCalculations as IC
 import manipulateImage as MI
 import math
+import partialTarget as PT
 
 def checkCornerDist(Rect_coor1, Rect_coor2):
     threshold = 10
@@ -172,12 +173,18 @@ def findValidTarget(image, mask):
     if len(cnt) == 2:
         valid = True
     elif len(cnt) == 1:
-        valid = False
-        Rect_coor, BFR_img, hull = zeroVariables(image)
+        cnt.append(0)
+        cnt, Rect_coor = PT.findPartial(cnt, Rect_coor, biggestContours, rev_indices)
+        if cnt[1] == 0:
+            valid = False
+            Rect_coor, BFR_img, hull = zeroVariables(image)
+        else:
+            valid = True
     else:
         valid = False
         Rect_coor, BFR_img, hull = zeroVariables(image)
         cnt = [0,0]
+        
         
     return valid, cnt, Rect_coor, BFR_img, hull
     
