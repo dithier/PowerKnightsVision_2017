@@ -40,6 +40,7 @@ def findValids(img_orig, filename):
     mask = MI.dilateAndErode(mask, 5)
     maskc = np.copy(mask)
     ret,maskc = cv2.threshold(maskc,127,255,0)
+    mask = np.copy(maskc)
     
     # Determine if there are any valid targets
     valid, cnt, Rect_coor, BFR_img, hull = VT.findValidTarget(img, mask)

@@ -22,7 +22,7 @@ from heapq import nlargest
 # directory for img
 #directory = 'C:/Users/Ithier/Documents/FIRST/2017/Practice Code/Vision Images/Vision Images/LED Peg/Numbered/'
 directory = 'C:/Users/Ithier/Documents/FIRST/2017/Pics/'
-fileName = '10.jpeg'
+fileName = '6.jpeg'
 picture = directory + fileName
 
 # directory for npz file
@@ -85,6 +85,7 @@ if len(areas) > 0:
     rev_indices = list(reversed(area_indices))
     ind = 0
     i = rev_indices[0]
+    print i
     for n in range(0, len(rev_indices)):
         if count == 1:
             break

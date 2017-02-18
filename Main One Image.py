@@ -14,7 +14,7 @@ import findTarget as FT
 # directory for img
 
 directory = 'C:/Users/Ithier/Documents/FIRST/2017/Pics/'
-fileName = '6.jpeg'
+fileName = '12.jpg'
 picture = directory + fileName
 
 directorysave = 'C:/Users/Ithier/Documents/FIRST/2017/AnalyzedV1/'
@@ -27,12 +27,14 @@ picturesave = directorysave + fileName
 #filename = directory + 'imageValues_1ftH3ftD0Angle0Brightness.npz'
 #filename = directory + 'imageValues_1ftH3ftD0Angle0Brightness.npz'
 
-filename = 'imageValuesMultiAttempt1.npz'
+#filename = 'imageValuesMultiAttempt1.npz'
+filename = 'imageValues.npz'
 #dir2 = 'C:/Users/Ithier/Documents/FIRST/2017/Practice Code/Vision Images/Vision Images/LED Peg/Numbered/'
 #picture = dir2 + '1.jpg'
 
 
 original = cv2.imread(picture)
+
 
 ######################### DO ANALYSIS ####################################
 angle, distance, validUpdate, BFR_img, mask, cnt = FT.findValids(original, filename)

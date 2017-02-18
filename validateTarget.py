@@ -12,7 +12,9 @@ from heapq import nlargest
 import imageCalculations as IC
 import manipulateImage as MI
 import math
-import partialTarget as PT
+#import partialTarget as PT
+
+filename = 'C:/Users/Ithier/Documents/FIRST/2017/PowerKnightsVision_2017/FP'
 
 def checkCornerDist(Rect_coor1, Rect_coor2):
     threshold = 10
@@ -161,6 +163,8 @@ def findValidTarget(image, mask):
                         hull.append(hull_indiv)
                         Rect_coor.append(Rect_coor_indiv)
                         goodTarget += 1
+                        np.savez(filename, validCnt = cnt[0], rectCoor = Rect_coor[0], cnt = contours)
+                           
                         
                 if i == area_indices[0] or goodTarget == 2: # if we've reached the end of our index list or we've found two good targets 
                     count = 1
@@ -168,18 +172,22 @@ def findValidTarget(image, mask):
                 
                 ind += 1
                 i = rev_indices[ind]
+                print i
                 
         
     if len(cnt) == 2:
         valid = True
+        print 'Two valid contours'
     elif len(cnt) == 1:
+          
         cnt.append(0)
-        cnt, Rect_coor = PT.findPartial(cnt, Rect_coor, biggestContours, rev_indices)
+        #cnt, Rect_coor = PT.findPartial(BFR_img, Rect_coor, contours)
         if cnt[1] == 0:
             valid = False
             Rect_coor, BFR_img, hull = zeroVariables(image)
         else:
             valid = True
+        print 'One valid contour'
     else:
         valid = False
         Rect_coor, BFR_img, hull = zeroVariables(image)
