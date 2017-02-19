@@ -14,7 +14,7 @@ import manipulateImage as MI
 import math
 import partialTarget as PT
 
-filename = 'C:/Users/Ithier/Documents/FIRST/2017/PowerKnightsVision_2017/FP'
+filename = 'C:/Users/Ithier/Documents/FIRST/2017/PowerKnightsVision_2017/12FP'
 
 def checkCornerDist(Rect_coor1, Rect_coor2):
     threshold = 10
@@ -29,8 +29,21 @@ def checkCornerDist(Rect_coor1, Rect_coor2):
         d = distance(a1, a2, b1, b2)
         if d < threshold:
             return False
-    
     return True
+    
+def inside(contour, valid):
+         # If False, it finds whether the point is inside or outside or on the contour (it returns +1, -1, 0 respectively).
+        for i in range(0, len(contour)):
+            x = contour[i][0]
+            y = contour[i][1]
+            bounds = cv2.pointPolygonTest(np.array(valid),(x,y),False)
+            if bounds == 1 or bounds == 0:
+                print "contour inside"
+                return False
+            else:
+                "contour not inside"
+                return True # it is outside the valid contour
+                
     
     
 
@@ -152,11 +165,15 @@ def findValidTarget(image, mask):
                     # Determine if contour meets specs
                     appropriateCnt = isValid(hull_indiv, Rect_coor_indiv)
                     
-                    # If valid already exists check it's not double counting
+                    # If valid already exists check it's not double counting and make sure iti's not in exisiting contour
                     if len(Rect_coor) != 0:
                         appropriateCnt = checkCornerDist(Rect_coor_indiv, Rect_coor[0])
+                        isOutside = inside(Rect_coor_indiv, Rect_coor[0])
+                    else:
+                        isOutside = True
+                        
                     
-                    if appropriateCnt:
+                    if appropriateCnt and isOutside == True:
                         print "i is Valid: " + str(i)
                         MI.drawBFR(BFR_img, box, corners)
                         cnt.append(biggestContours[i])

@@ -10,6 +10,8 @@ import manipulateImage as MI
 import validateTarget as VT
 import bounding as B
 
+filename = 'C:/Users/Ithier/Documents/FIRST/2017/PowerKnightsVision_2017/revisedContours12'
+
 def findPartial(cnt, BFR_img, Rect_coor, contours):
     thresholdB = 10
     valid = cnt[0]
@@ -21,6 +23,7 @@ def findPartial(cnt, BFR_img, Rect_coor, contours):
             bounds = cv2.pointPolygonTest(valid,(x,y),False)
             if bounds == 1 or bounds == 0:
                 return False
+                print "returned false"
             else:
                 return True # it is outside the valid contour
                 
@@ -81,6 +84,10 @@ def findPartial(cnt, BFR_img, Rect_coor, contours):
               # make sure contour isn't in valid contour
               if inside(contour, valid):
                   revisedContours.append(contour)
+                  
+    #np.savez(filename, validCnt = cnt[0], rectCoor = Rect_coor[0], cnt = contours)
+    #np.savez(filename, revised = revisedContours, validCnt = cnt[0])
+    #print revisedContours
     ########################################################################################
      
     

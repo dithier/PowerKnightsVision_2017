@@ -12,18 +12,21 @@ import validateTarget as VT
 import bounding as B
 #Need contours, Rect_coor, valid target
 
-picture = 'C:/Users/Ithier/Documents/FIRST/2017/Pics/12.jpg'
-filename = 'C:/Users/Ithier/Documents/FIRST/2017/PowerKnightsVision_2017/FP.npz'
+picture = 'C:/Users/Ithier/Documents/FIRST/2017/Pics/cropped/12.jpg'
+filename = 'C:/Users/Ithier/Documents/FIRST/2017/PowerKnightsVision_2017/12FP.npz'
 original = cv2.imread(picture)
 BFR_img = np.copy(original)
 
 # Load values from program for 6.jpeg
 values = np.load(filename)
-valid = values['validCnt']
+cnt = values['validCnt']
 contours = values['cnt']
 Rect_coor = values['rectCoor']
 thresholdB = 10
 #############################################################################
+thresholdB = 10
+valid = cnt[0]
+################################################################################
 def inside(contour, valid):
      # If False, it finds whether the point is inside or outside or on the contour (it returns +1, -1, 0 respectively).
     for i in range(0, len(contour)):
@@ -52,6 +55,19 @@ def testCntLocation(boundingBox, rect):
             return True
         else:
             return False
+            
+def avgPxlLengths(Rect_coor):
+    w1 = Rect_coor[1][0] - Rect_coor[0][0]
+    w2 = Rect_coor[2][0] - Rect_coor[3][0]
+    w = (w1 + w2)/2.0 # average width of rectangle based on both sides
+    
+    h1 = Rect_coor[3][1] - Rect_coor[0][1]
+    h2 = Rect_coor[2][1] - Rect_coor[1][1]
+    h = (h1 + h2)/2.0 # average height of rectangle based on both sides
+    
+    aspect_ratio = float(w)/h
+    
+    return aspect_ratio, h, w
 
 ################################################################################
 numContours = 73
@@ -78,32 +94,18 @@ for contour in sortedContours:
           # make sure contour isn't in valid contour
           if inside(contour, valid):
               revisedContours.append(contour)
-###################################################################################   
-"""
-box, hull_indiv, corners, BFR_img = MI.bestFitRect(BFR_img, revisedContours[3])
-                
-if len(corners) == 4:
-    # Organize corners
-    Rect_coor_indiv = IC.organizeCorners(corners)
-    
-cv2.drawContours(BFR_img,[np.array(Rect_coor_indiv)],0,(0,0,255),2)
-cv2.imshow('img', BFR_img)
-if cv2.waitKey(0) & 0xFF == ord('q'):
-    cv2.destroyAllWindows
-"""
+             
 ########################################################################################
  
 
 for contour in revisedContours:
-    box, hull_indiv, corners, BFR_img = MI.bestFitRect(BFR_img, revisedContours[3])
+    box, hull_indiv, corners, BFR_img = MI.bestFitRect(BFR_img, contour)
    
     if len(corners) == 3 or len(corners) == 4:
          M = cv2.moments(contour)
-         global cx, cy
          cx = int(M['m10']/M['m00'])
-         cy = int(M['m01']/M['m00'])
          # find if to left or right of valid contour
-         AR, h, w = VT.avgPxlLengths(Rect_coor)
+         AR, h, w = avgPxlLengths(Rect_coor)
          length = findLength(h,w)
          if cx > cxV:
              boundingBox = B.calculateBoundingBox(True, length, thresholdB, Rect_coor, BFR_img) # True means left
@@ -114,27 +116,7 @@ for contour in revisedContours:
         
          inside = testCntLocation(boundingBox, contour)
          if inside:
-             print 'Valid contour found'
-             otherContour = contour
+             print 'Valid second contour found'
+             cnt.append(contour)
              break
-
-cv2.drawContours(original,[otherContour],0,(0,0,255),2)
-cv2.circle(original,(cx,cy), 5, (0,255,0), -1)
-cv2.imshow('orig', original)
-if cv2.waitKey(0) & 0xFF == ord('q'):
-        cv2.destroyAllWindows
-            
-        
-        
-"""
-for contour in revisedContours:
-    cv2.drawContours(BFR_img,[contour],0,(0,0,255),2)
-    cv2.namedWindow('img')
-    cv2.imshow('img', BFR_img)
-    if cv2.waitKey(0) & 0xFF == ord('q'):
-        cv2.destroyAllWindows
-"""
-
-        
-
-   
+         
