@@ -28,7 +28,7 @@ picture = directory + fileName
 # directory for npz file
 #directory = 'C:/Users/Ithier/Documents/FIRST/2017/PowerKnightsVision_2017/Calibration Files/' # folder npz file is in
 #filename = directory + 'imageValues_1ftH3ftD0Angle0Brightness.npz'
-filename = 'imageValuesMultiAttempt1.npz'
+filename = 'imageValues_6jpeg.npz'
 
 original = cv2.imread(picture)
 

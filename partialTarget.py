@@ -42,6 +42,19 @@ def findPartial(cnt, BFR_img, Rect_coor, contours):
                 return True
             else:
                 return False
+                
+    def avgPxlLengths(Rect_coor):
+        w1 = Rect_coor[1][0] - Rect_coor[0][0]
+        w2 = Rect_coor[2][0] - Rect_coor[3][0]
+        w = (w1 + w2)/2.0 # average width of rectangle based on both sides
+        
+        h1 = Rect_coor[3][1] - Rect_coor[0][1]
+        h2 = Rect_coor[2][1] - Rect_coor[1][1]
+        h = (h1 + h2)/2.0 # average height of rectangle based on both sides
+        
+        aspect_ratio = float(w)/h
+        
+        return aspect_ratio, h, w
     
     ################################################################################
     numContours = 73
@@ -72,13 +85,13 @@ def findPartial(cnt, BFR_img, Rect_coor, contours):
      
     
     for contour in revisedContours:
-        box, hull_indiv, corners, BFR_img = MI.bestFitRect(BFR_img, revisedContours[3])
+        box, hull_indiv, corners, BFR_img = MI.bestFitRect(BFR_img, contour)
        
         if len(corners) == 3 or len(corners) == 4:
              M = cv2.moments(contour)
              cx = int(M['m10']/M['m00'])
              # find if to left or right of valid contour
-             AR, h, w = VT.avgPxlLengths(Rect_coor)
+             AR, h, w = avgPxlLengths(Rect_coor)
              length = findLength(h,w)
              if cx > cxV:
                  boundingBox = B.calculateBoundingBox(True, length, thresholdB, Rect_coor, BFR_img) # True means left
