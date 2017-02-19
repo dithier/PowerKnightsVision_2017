@@ -14,7 +14,7 @@ import findTarget as FT
 # directory for img
 
 directory = 'C:/Users/Ithier/Documents/FIRST/2017/Pics/'
-fileName = '10.jpeg'
+fileName = '13.jpg'
 picture = directory + fileName
 
 directorysave = 'C:/Users/Ithier/Documents/FIRST/2017/AnalyzedV1/'
@@ -27,9 +27,9 @@ picturesave = directorysave + fileName
 #filename = directory + 'imageValues_1ftH3ftD0Angle0Brightness.npz'
 #filename = directory + 'imageValues_1ftH3ftD0Angle0Brightness.npz'
 
-filename = 'imageValues.npz'
+#filename = 'imageValues.npz'
 #filename = 'imageValues_12jpg.npz'
-#filename = 'imageValuesMultiAttempt1.npz'
+filename = 'imageValuesMultiAttempt1.npz'
 #filename = 'imageValues_12jpg.npz'
 #dir2 = 'C:/Users/Ithier/Documents/FIRST/2017/Practice Code/Vision Images/Vision Images/LED Peg/Numbered/'
 #picture = dir2 + '1.jpg'
