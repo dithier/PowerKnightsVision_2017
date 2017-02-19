@@ -27,7 +27,7 @@ picturesave = directorysave + fileName
 #filename = directory + 'imageValues_1ftH3ftD0Angle0Brightness.npz'
 #filename = directory + 'imageValues_1ftH3ftD0Angle0Brightness.npz'
 
-filename = 'imageValuesMultiAttempt1.npz'
+filename = 'imageValues_6jpeg.npz'
 #filename = 'imageValues_12jpg.npz'
 #dir2 = 'C:/Users/Ithier/Documents/FIRST/2017/Practice Code/Vision Images/Vision Images/LED Peg/Numbered/'
 #picture = dir2 + '1.jpg'
@@ -61,3 +61,5 @@ cv2.imshow('original', original)
 # Destroy windows when done
 if cv2.waitKey(0) & 0xFF == ord('q'):
     cv2.destroyAllWindows()
+
+

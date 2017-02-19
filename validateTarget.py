@@ -12,7 +12,7 @@ from heapq import nlargest
 import imageCalculations as IC
 import manipulateImage as MI
 import math
-import partialTarget as PT
+#import partialTarget as PT
 
 filename = 'C:/Users/Ithier/Documents/FIRST/2017/PowerKnightsVision_2017/FP'
 
@@ -180,7 +180,7 @@ def findValidTarget(image, mask):
         print 'Two valid contours'
     elif len(cnt) == 1:
         cnt.append(0)
-        cnt, Rect_coor = PT.findPartial(cnt, BFR_img, Rect_coor, contours)
+        #cnt, Rect_coor = PT.findPartial(cnt, BFR_img, Rect_coor, contours)
         if cnt[1] == 0:
             valid = False
             Rect_coor, BFR_img, hull = zeroVariables(image)
