@@ -48,11 +48,16 @@ def findDistancePeg(image, Rect_coor): ############## NEED TO UPDATE VARIABLES #
         pass
     
     def targetPixelWidth():
-        w1 = math.fabs(Rect_coor[0][1][0] - Rect_coor[0][0][0])
-        w2 = math.fabs(Rect_coor[0][2][0] - Rect_coor[0][3][0])
-        w3 = math.fabs(Rect_coor[1][1][0] - Rect_coor[1][0][0])
-        w4 = math.fabs(Rect_coor[1][2][0] - Rect_coor[1][3][0])
-        width = (w1 + w2 + w3 + w4)/ 4.0 # avg the widthes of the two targets
+        try:
+            w1 = math.fabs(Rect_coor[0][1][0] - Rect_coor[0][0][0])
+            w2 = math.fabs(Rect_coor[0][2][0] - Rect_coor[0][3][0])
+            w3 = math.fabs(Rect_coor[1][1][0] - Rect_coor[1][0][0])
+            w4 = math.fabs(Rect_coor[1][2][0] - Rect_coor[1][3][0])
+            width = (w1 + w2 + w3 + w4)/ 4.0 # avg the widthes of the two targets
+        except:
+            w1 = math.fabs(Rect_coor[0][0] - Rect_coor[1][0])
+            w2 = math.fabs(Rect_coor[3][0] - Rect_coor[2][0])
+            width = (w1 + w2)/2
         return width
         
     totalDistance_W = distance(targetWidth, w, targetPixelWidth(), horizontal_cameraFOV) # diagonal distance from camera to tower (ft)

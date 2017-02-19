@@ -103,7 +103,7 @@ def findPartial(cnt, BFR_img, Rect_coor, contours):
              inside = testCntLocation(boundingBox, contour)
              if inside:
                  print 'Valid second contour found'
-                 cnt[1] = contour
+                 cnt.append(contour)
                  break
              
     return cnt, Rect_coor

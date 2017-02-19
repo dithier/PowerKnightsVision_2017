@@ -179,9 +179,8 @@ def findValidTarget(image, mask):
         valid = True
         print 'Two valid contours'
     elif len(cnt) == 1:
-        cnt.append(0)
         cnt, Rect_coor = PT.findPartial(cnt, BFR_img, Rect_coor[0], contours)
-        if cnt[1] == 0:
+        if len(cnt) == 1:
             valid = False
             Rect_coor, BFR_img, hull = zeroVariables(image)
             print 'One valid contour'
