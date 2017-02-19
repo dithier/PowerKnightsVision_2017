@@ -12,7 +12,7 @@ from heapq import nlargest
 import imageCalculations as IC
 import manipulateImage as MI
 import math
-#import partialTarget as PT
+import partialTarget as PT
 
 filename = 'C:/Users/Ithier/Documents/FIRST/2017/PowerKnightsVision_2017/FP'
 
@@ -163,7 +163,7 @@ def findValidTarget(image, mask):
                         hull.append(hull_indiv)
                         Rect_coor.append(Rect_coor_indiv)
                         goodTarget += 1
-                        np.savez(filename, validCnt = cnt[0], rectCoor = Rect_coor[0], cnt = contours)
+                        #np.savez(filename, validCnt = cnt[0], rectCoor = Rect_coor[0], cnt = contours)
                            
                         
                 if i == area_indices[0] or goodTarget == 2: # if we've reached the end of our index list or we've found two good targets 
@@ -179,15 +179,15 @@ def findValidTarget(image, mask):
         valid = True
         print 'Two valid contours'
     elif len(cnt) == 1:
-          
         cnt.append(0)
-        #cnt, Rect_coor = PT.findPartial(BFR_img, Rect_coor, contours)
+        cnt, Rect_coor = PT.findPartial(cnt, BFR_img, Rect_coor, contours)
         if cnt[1] == 0:
             valid = False
             Rect_coor, BFR_img, hull = zeroVariables(image)
+            print 'One valid contour'
         else:
             valid = True
-        print 'One valid contour'
+        
     else:
         valid = False
         Rect_coor, BFR_img, hull = zeroVariables(image)
