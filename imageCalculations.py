@@ -35,8 +35,8 @@ def findAnglePeg(image, cx1, cx2):   ############### NEED TO UPDATE VARIABLES ##
 def findDistancePeg(image, Rect_coor): ############## NEED TO UPDATE VARIABLES #############
     pegHeight = 13.25/12.0 # ft
     targetWidth = 2 # inches
-    cameraHeight = 1.5 # ft
-    robot2camera = 1.5 # distance from front of robot to camera (ft)
+    cameraHeight = 5/12.0 # ft
+    robot2camera = 0 # distance from front of robot to camera (ft)
     
     def distance(targetActual, imagePx, targetPx, cameraFOV):
         totalDistance = (((targetActual*imagePx)/targetPx)/2.0) / \
