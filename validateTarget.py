@@ -47,8 +47,9 @@ def inside(contour, valid):
     
     
 
-def isValidShapePeg(hull):
+def isValidShapePeg(contour):
     matchThreshold = 0.198
+    #matchThreshold = 0.12
     '''
     Rectangle.png was created with this code
     cv2.rectangle(rectangle,(20,20),(60,120),(255,255,255),-1)  # coordinates chosen by making sure it has same aspect ratio as real life targe
@@ -61,7 +62,7 @@ def isValidShapePeg(hull):
     ret, thresh = cv2.threshold(rectangle, 127, 255, cv2.THRESH_BINARY)
     img, contours, hierarchy = cv2.findContours(thresh,2,1)
     cnt = contours[0]
-    match_quality = cv2.matchShapes(cnt,hull,1,0.0)
+    match_quality = cv2.matchShapes(cnt,contour,1,0.0)
     print "Match: " + str(match_quality)
     
     if match_quality < matchThreshold:
@@ -84,7 +85,7 @@ def avgPxlLengths(Rect_coor):
 
 def isValidARPeg(Rect_coor):
     minAR = 0.32
-    maxAR = 0.493
+    maxAR = 0.492
     ''' Note on coordinate system: The top left corner of the target is Rect_coor[0], the top right is Rect_coor[1],
     the bottom right is Rect_coor[2], and the bottom left is Rect_coor[3]. The second index determines whether it is an
     x or y coordinate. Ex, Rect_coor[1][0] is the x value of the top right corner of the target while Rect_coor[1][1] is
@@ -100,9 +101,9 @@ def isValidARPeg(Rect_coor):
         return True
         
 
-def isValid(hull, Rect_coor):
+def isValid(contour, Rect_coor):
     valid1 = isValidARPeg(Rect_coor)
-    valid2= isValidShapePeg(hull)
+    valid2= isValidShapePeg(contour)
     
     if valid1 == False or valid2 == False:
         return False
@@ -163,7 +164,8 @@ def findValidTarget(image, mask):
                     Rect_coor_indiv = IC.organizeCorners(corners)
                     
                     # Determine if contour meets specs
-                    appropriateCnt = isValid(hull_indiv, Rect_coor_indiv)
+                    appropriateCnt = isValid(biggestContours[i], Rect_coor_indiv)
+                    #appropriateCnt = isValid(hull_indiv, Rect_coor_indiv)
                     
                     # If valid already exists check it's not double counting and make sure iti's not in exisiting contour
                     if len(Rect_coor) != 0:

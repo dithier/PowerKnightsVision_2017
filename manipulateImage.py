@@ -25,7 +25,8 @@ def bestFitRect(img_orig, cnt):
     
     
     #                                 image, number of corners, quality (0-1), min euclidean dist
-    corners = cv2.goodFeaturesToTrack(corners_img, 4, 0.2, 5) # Find coordinates for the four corners
+    # note quality level was at 0.2
+    corners = cv2.goodFeaturesToTrack(corners_img, 4, 0.01, 5) # Find coordinates for the four corners
     corners = np.int0(corners)
     
     """
