@@ -30,10 +30,11 @@ def run(table, image_orig, npz_file, validCount, i):
     mask = FT.processImage(image_orig, npz)
     if i < 4:
         filename = directory + 'mask' + str(i) + '.jpg'
-        cv2.imwrite(filename, mask)
+        cv2.imwrite(filename, mask) 
     #except:
         #print "error processing image"
         #flag = 1
+    i += 1
     
     if flag == 0:
         # try:
