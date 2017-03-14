@@ -30,6 +30,11 @@ def checkCornerDist(Rect_coor1, Rect_coor2):
         if d < threshold:
             return False
     return True
+'''    
+def checkRectCoor(Rect_coor):
+    threshold = 50 # threshold in pixels
+    w1 = math.fabs(Rect_coor[0][0] - Rect_coor[1][0])
+'''
     
 def inside(contour, valid):
          # If False, it finds whether the point is inside or outside or on the contour (it returns +1, -1, 0 respectively).
@@ -48,7 +53,8 @@ def inside(contour, valid):
     
 
 def isValidShapePeg(contour):
-    matchThreshold = 0.198
+    matchThreshold = 0.3
+    #matchThreshold = 0.198
     #matchThreshold = 0.12
     '''
     Rectangle.png was created with this code
@@ -84,8 +90,10 @@ def avgPxlLengths(Rect_coor):
     return aspect_ratio, h, w
 
 def isValidARPeg(Rect_coor):
-    minAR = 0.32
-    maxAR = 0.492
+    #minAR = 0.32
+    #maxAR = 0.492
+    minAR = 0.2
+    maxAR = 0.6
     ''' Note on coordinate system: The top left corner of the target is Rect_coor[0], the top right is Rect_coor[1],
     the bottom right is Rect_coor[2], and the bottom left is Rect_coor[3]. The second index determines whether it is an
     x or y coordinate. Ex, Rect_coor[1][0] is the x value of the top right corner of the target while Rect_coor[1][1] is
@@ -165,10 +173,11 @@ def findValidTarget(image, mask):
                     
                     # Determine if contour meets specs
                     appropriateCnt = isValid(biggestContours[i], Rect_coor_indiv)
+                    #rectCoorOK = checkRectCoor(Rect_coor_indiv)
                     #appropriateCnt = isValid(hull_indiv, Rect_coor_indiv)
                     
                     # If valid already exists check it's not double counting and make sure iti's not in exisiting contour
-                    if len(Rect_coor) != 0:
+                    if len(Rect_coor) != 0 and appropriateCnt == True:
                         appropriateCnt = checkCornerDist(Rect_coor_indiv, Rect_coor[0])
                         isOutside = inside(Rect_coor_indiv, Rect_coor[0])
                     else:

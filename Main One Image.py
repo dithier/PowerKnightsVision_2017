@@ -15,8 +15,8 @@ import findTarget as FT
 
 #directory = 'C:/Users/Ithier/Documents/FIRST/2017/Pics/cropped/'
 #directory = 'C:/Users/Ithier/Documents/FIRST/2017/Pics/'
-directory = 'C:/Users/Ithier/Documents/FIRST/2017/TargetPics_3.3/2ft/'
-fileName = '1.jpg'
+directory = 'C:/Users/Ithier/Documents/FIRST/2017/TargetPics_3.3_cropped/6ft/'
+fileName = '5.jpg'
 picture = directory + fileName
 
 directorysave = 'C:/Users/Ithier/Documents/FIRST/2017/AnalyzedV1/'

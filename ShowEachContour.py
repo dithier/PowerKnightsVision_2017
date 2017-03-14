@@ -21,15 +21,16 @@ from heapq import nlargest
 
 # directory for img
 #directory = 'C:/Users/Ithier/Documents/FIRST/2017/Practice Code/Vision Images/Vision Images/LED Peg/Numbered/'
-directory = 'C:/Users/Ithier/Documents/FIRST/2017/Pics/'
-fileName = '6.jpeg'
+#directory = 'C:/Users/Ithier/Documents/FIRST/2017/Pics/'
+directory = 'C:/Users/Ithier/Documents/FIRST/2017/TargetPics_3.3_cropped/2ft/'
+fileName = '4.jpg'
 picture = directory + fileName
 
 # directory for npz file
 #directory = 'C:/Users/Ithier/Documents/FIRST/2017/PowerKnightsVision_2017/Calibration Files/' # folder npz file is in
 #filename = directory + 'imageValues_1ftH3ftD0Angle0Brightness.npz'
-filename = 'imageValues_6jpeg.npz'
-
+#filename = 'imageValues_6jpeg.npz'
+filename = 'imageValues_3_3.npz'
 original = cv2.imread(picture)
 
 ######################### DO ANALYSIS ####################################

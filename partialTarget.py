@@ -77,8 +77,12 @@ def findPartial(cnt, BFR_img, Rect_coor, contours):
         # need at least length of 4 to have 4 corners 
         if len(contour) > 4:
           M = cv2.moments(contour)
-          cx = int(M['m10']/M['m00'])
-          cy = int(M['m01']/M['m00']) 
+          try:
+              cx = int(M['m10']/M['m00'])
+              cy = int(M['m01']/M['m00']) 
+          except:
+              cx = 0
+              cy = 0
           # make sure contour doesn't share same centroid as valid contour
           if cx != cxV and cy != cyV:
               # make sure contour isn't in valid contour
@@ -96,7 +100,10 @@ def findPartial(cnt, BFR_img, Rect_coor, contours):
        
         if len(corners) == 3 or len(corners) == 4:
              M = cv2.moments(contour)
-             cx = int(M['m10']/M['m00'])
+             try:
+                 cx = int(M['m10']/M['m00'])
+             except:
+                 cx = 0
              # find if to left or right of valid contour
              AR, h, w = avgPxlLengths(Rect_coor)
              length = findLength(h,w)
