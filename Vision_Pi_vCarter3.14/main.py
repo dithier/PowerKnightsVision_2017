@@ -88,10 +88,10 @@ def run(table, image_orig, npz_file, validCount, i):
     return image_orig, mask, final_image, validCount, i
     
 
-npz = 'imageValues_3.18.npz'#directory of npz file
+npz = 'imageValues_3.18newer.npz'#directory of npz file
 
 #video_input = 'http://127.0.0.1:1180/?action=stream?dummy=param.mjpg'
-video_input = '10.5.1.160:1180/?action=stream'
+video_input = 'http://10.5.1.160:1180/?action=stream?dummy=param.mjpg'
 #video_input = 0
 video = cv2.VideoCapture(video_input)
 #video.set(16,.10) #exposure
