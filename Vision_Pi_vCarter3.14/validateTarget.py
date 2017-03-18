@@ -11,21 +11,27 @@ import numpy as np
 import manipulateImage as MI
 import imageCalculations as IC
 import math
+import logging
 
 values = np.load('rectangleCNT.npz')
 rectangleCNT = values['contour']
 def isValidShape(hull):
+    startS = logging.time.time()
     matchThreshold = .264
     global rectangleCNT
     
     #check quality of shape match
     match_quality = cv2.matchShapes(rectangleCNT, hull, 1, 0.0)
     print "match quality " + str(match_quality)
+    endS = logging.time.time()
+    totalS = endS - startS
+    print "Time to match shape: " + str(totalS)
     return (match_quality < matchThreshold)
 
     
 def isValidARPeg(Rect_coor):
 #Checks rectangles aspect ratio
+    startAR = logging.time.time()
     #minAR = .32
     minAR = .27
     #maxAR = .493
@@ -43,6 +49,9 @@ def isValidARPeg(Rect_coor):
         h = .001
     AR = float(w)/float(h)
     print "AR " + str(AR)
+    endAR = logging.time.time()
+    totalAR = endAR - startAR
+    print "Time to calc AR: " + str(totalAR)
     return (minAR < AR < maxAR)
     
     
@@ -83,9 +92,13 @@ def findValidTarget(image, img_mask):
     numContours = 10
     
     #take n largest contours sorted by area
+    startC = logging.time.time()
     contours, _ = cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
     sortedContours = (sorted(contours, key = lambda contour:cv2.contourArea(contour), reverse = True))[:numContours]
-
+    endC = logging.time.time()
+    totalC = endC - startC
+    print "Time to find contours and sort: " + str(totalC)
+    
     #filter invalid contours until 2 valid are found
     validContours = []
     validRect_coor = []
@@ -93,13 +106,21 @@ def findValidTarget(image, img_mask):
     valid = False
     for contour in sortedContours:
         #get BFR and corners
-        print "got into sortedContours"
+        print "GOT INTO SORTEDCONTOURS"
         
-    
+        startBFR = logging.time.time()
         _, hull, corners, BFR_img = MI.bestFitRect(BFR_img, contour)
+        endBFR = logging.time.time()
+        totalBFR = endBFR - startBFR
+        print "Time to calc BFR: " + str(totalBFR)
+        
         if len(corners) == 4:
             try:
+                startR = logging.time.time()
                 Rect_coor = IC.organizeCorners(corners)
+                endR = logging.time.time()
+                totalR = endR - startR
+                print "Time to organize corners: " + str(totalR)
             except:
                 continue
         else:
@@ -108,7 +129,12 @@ def findValidTarget(image, img_mask):
         #check validity
         if isValid(hull, Rect_coor):
             if len(validContours) == 1:
-                if not checkCornerDist(Rect_coor, validRect_coor[0]):
+                startCD = logging.time.time()
+                CD = checkCornerDist(Rect_coor, validRect_coor[0])
+                endCD = logging.time.time()
+                totalCD = endCD - startCD
+                print "Time for corner dist check: " + str(totalCD)
+                if not CD:
                     continue
             print "1 valid contour"
                 
@@ -117,7 +143,7 @@ def findValidTarget(image, img_mask):
             validHull.append(hull)  
             print "Length of valid contours: " + str(len(validContours))
         else:
-            print "0 valid contours"
+            print "contour was not valid"
         
         if len(validContours) == 2:
             valid = True

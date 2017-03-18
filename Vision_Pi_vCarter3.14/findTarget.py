@@ -29,11 +29,11 @@ def processImage(image, npz):
     
     
     
-def send2Table(Table, validCount, angle, distance):
+def send2Table(Table, validCount, angle):
     try:
         Table.putNumber('validCount', validCount)
         Table.putNumber('angle', angle)
-        Table.putNumber('distance', distance)
+        #Table.putNumber('distance', distance)
     except:
         print "Error sending to table"
     
