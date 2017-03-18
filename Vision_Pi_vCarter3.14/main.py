@@ -92,7 +92,7 @@ npz = 'imageValues_WPI_multi.npz'#directory of npz file
 
 #video_input = 'http://127.0.0.1:1180/?action=stream?dummy=param.mjpg'
 video_input = '10.5.1.160:1180/?action=stream'
-#video_input = 0
+video_input = 0
 video = cv2.VideoCapture(video_input)
 #video.set(16,.10) #exposure
 #video.set(11,.10) #brightness
@@ -127,8 +127,8 @@ while 1:
     while video.isOpened():
         print 3
         ret, frame = video.read()
-        cv2.imshow('Camera Frame', frame)
-        cv2.waitKey(0)
+        #cv2.imshow('Camera Frame', frame)
+        #cv2.waitKey(0)
                 
         #frame = img
         if ret and not (frame == None):
@@ -138,6 +138,7 @@ while 1:
             end = datetime.datetime.now()
             total = end - start
             print "Time of total process: " + str(total.microseconds)
+            print "Valid Count: " + str(validCount)
 
 """
 start = datetime.datetime.now()

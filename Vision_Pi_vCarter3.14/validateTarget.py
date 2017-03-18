@@ -93,7 +93,7 @@ def findValidTarget(image, img_mask):
     
     #take n largest contours sorted by area
     startC = datetime.datetime.now()
-    contours, _ = cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+    _, contours, _ = cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
     sortedContours = (sorted(contours, key = lambda contour:cv2.contourArea(contour), reverse = True))[:numContours]
     endC = datetime.datetime.now()
     totalC = endC - startC
