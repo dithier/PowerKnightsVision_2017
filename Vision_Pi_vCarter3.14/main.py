@@ -70,7 +70,7 @@ def run(table, image_orig, npz_file, validCount, i):
     return image_orig, mask, final_image, validCount, i
     
 
-npz = 'imageValues_3_3.npz'#directory of npz file
+npz = 'imageValues_WPI_multi.npz'#directory of npz file
 
 video_input = 'http://127.0.0.1:1180/?action=stream?dummy=param.mjpg'
 #video_input = 0
@@ -90,15 +90,16 @@ except:
 validCount = 0
 i = 0
 
-"""
-directory = 'C:/Users/Ithier/Documents/FIRST/2017/Pics/Pics Set 3.3/2ft/'
-pic = '3.jpg'
+#"""
+#directory = 'C:/Users/Ithier/Documents/FIRST/2017/Pics/Pics Set 3.3/2ft/'
+directory = 'C:/Users/Ithier/Documents/FIRST/2017/Pics/WPI/'
+pic = '17.jpg'
 picture = directory + pic
 
 img = cv2.imread(picture)
-"""
-
 #"""
+
+"""
 print 1
 
 while 1:
