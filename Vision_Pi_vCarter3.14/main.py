@@ -88,11 +88,11 @@ def run(table, image_orig, npz_file, validCount, i):
     return image_orig, mask, final_image, validCount, i
     
 
-npz = 'imageValues_WPI_multi.npz'#directory of npz file
+npz = 'imageValues_3.18.npz'#directory of npz file
 
 #video_input = 'http://127.0.0.1:1180/?action=stream?dummy=param.mjpg'
 video_input = '10.5.1.160:1180/?action=stream'
-video_input = 0
+#video_input = 0
 video = cv2.VideoCapture(video_input)
 #video.set(16,.10) #exposure
 #video.set(11,.10) #brightness
@@ -112,9 +112,10 @@ i = 0
 
 """
 #directory = 'C:/Users/Ithier/Documents/FIRST/2017/Pics/Pics Set 3.3/2ft/'
-directory = 'C:/Users/Ithier/Documents/FIRST/2017/Pics/WPI/'
-pic = '17.jpg'
-picture = directory + pic
+#directory = 'C:/Users/Ithier/Documents/FIRST/2017/Pics/WPI/'
+directory2 = 'C:/Users/Ithier/Documents/FIRST/2017/PowerKnightsVision_2017/Vision_Pi_vCarter3.14/'
+pic = 'darkergreen_3.18.png'
+picture = directory2 + pic
 
 img = cv2.imread(picture)
 """
