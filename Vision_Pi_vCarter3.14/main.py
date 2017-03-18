@@ -13,6 +13,7 @@ import findTarget as FT
 import imageCalculations as IC
 from networktables import NetworkTable
 import logging
+import datetime
 
 
 
@@ -28,11 +29,11 @@ def run(table, image_orig, npz_file, validCount, i):
     flag = 0
   
     #try: 
-    startMask = logging.time.time()   
+    startMask = datetime.datetime.now()   
     mask = FT.processImage(image_orig, npz)
-    endMask = logging.time.time()
+    endMask = datetime.datetime.now()
     totalMask = endMask - startMask
-    print "Time to make mask: " + str(totalMask)
+    print "Time to make mask: " + str(totalMask.microseconds)
     
     if i < 4:
         filename = directory + 'mask' + str(i) + '.jpg'
@@ -44,18 +45,18 @@ def run(table, image_orig, npz_file, validCount, i):
     
     if flag == 0:
         # try:
-        startValid = logging.time.time()
+        startValid = datetime.datetime.now()
         valid, validContours, validRect_coor, BFR_img, validHull = VT.findValidTarget(image_orig, mask)
-        endValid = logging.time.time()
+        endValid = datetime.datetime.now()
         totalValid = endValid - startValid
-        print "Time for findValidTarget: " + str(totalValid)        
+        print "Time for findValidTarget: " + str(totalValid.microseconds)        
         # except:
             #print "error processing image"
             #flag = 1
             #valid = False
     
     #final_image = MI.drawCrossHairs(final_image)
-    startCalc = logging.time.time()
+    startCalc = datetime.datetime.now()
     if valid:
         try:
             cx1, cy1 = IC.findCenter(validContours[0])
@@ -74,15 +75,15 @@ def run(table, image_orig, npz_file, validCount, i):
     else:
         angle = 100
         #distance = 0
-    endCalc = logging.time.time()
+    endCalc = datetime.datetime.now()
     totalCalc = endCalc - startCalc
-    print "Time to calculate angle: " + str(totalCalc)
+    print "Time to calculate angle: " + str(totalCalc.microseconds)
         
-    startTable = logging.time.time()
+    startTable = datetime.datetime.now()
     FT.send2Table(table, validCount, angle)
-    endTable = logging.time.time()
+    endTable = datetime.datetime.now()
     totalTable = endTable - startTable
-    print "Time sent to table: " + str(totalTable)
+    print "Time sent to table: " + str(totalTable.microseconds)
     
     return image_orig, mask, final_image, validCount, i
     
@@ -90,7 +91,7 @@ def run(table, image_orig, npz_file, validCount, i):
 npz = 'imageValues_WPI_multi.npz'#directory of npz file
 
 video_input = 'http://127.0.0.1:1180/?action=stream?dummy=param.mjpg'
-#video_input = 0
+video_input = 0
 
 video = cv2.VideoCapture(video_input)
 
@@ -127,19 +128,19 @@ while 1:
         #frame = img
         if ret and not (frame == None):
             print 4
-            start = logging.time.time()
+            start = datetime.datetime.now()
             image_orig, mask, final_image, validCount, i = run (sd, frame, npz, validCount, i)
-            end = logging.time.time()
+            end = datetime.datetime.now()
             total = end - start
-            print "Time of total process: " + str(total)
+            print "Time of total process: " + str(total.microseconds)
 
 """
-start = logging.time.time()
+start = datetime.datetime.now()
 image_orig, mask, final_img, validCount, i = run(sd, img, npz, 0, i)
-end = logging.time.time()
+end = datetime.datetime.now()
 totalTime = end - start
 
-print "Total time: " + str(totalTime)
+print "Total time: " + str(totalTime.microseconds)
 cv2.imshow("orig", image_orig)
 cv2.imshow("mask", mask)
 cv2.imshow("final", final_img)
