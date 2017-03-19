@@ -21,13 +21,13 @@ def bestFitRect(img_orig, cnt, debug):
     
     # Create black image, draw rectangle hull on it, corner detection
     corners_img = np.zeros((img_orig.shape[0],img_orig.shape[1],img_orig.shape[2]), np.uint8)
-    startD = datetime.datetime.now()
+    #startD = datetime.datetime.now()
     cv2.drawContours(corners_img, [box], 0, (255,255,255), -1)
     if debug >= 4:
         endD = datetime.datetime.now()
         totalD = endD - startD
         print "Time BFR draw contours: " + str(totalD.microseconds) 
-    startC = datetime.datetime.now()
+    #startC = datetime.datetime.now()
     corners_img = cv2.cvtColor(corners_img, cv2.COLOR_BGR2GRAY)
     if debug >= 4:
         endC = datetime.datetime.now()
@@ -36,8 +36,8 @@ def bestFitRect(img_orig, cnt, debug):
     
     
     #                                 image, number of corners, quality (0-1), min euclidean dist
-    start = datetime.datetime.now()    
-    corners = cv2.goodFeaturesToTrack(corners_img, 4, 0.01, 13) # Find coordinates for the four corners    
+    #start = datetime.datetime.now()    
+    corners = cv2.goodFeaturesToTrack(corners_img, 4, 0.01, 5) # Find coordinates for the four corners    
     if debug >= 4:    
         end = datetime.datetime.now()
         total = end - start

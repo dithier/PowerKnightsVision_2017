@@ -19,7 +19,7 @@ def processImage(image):
 #convert to hsv
 #hsv filter
 #erode
-    minimum = np.array([60, 0, 12])
+    minimum = np.array([59, 0, 44])
     maximum = np.array([150, 255, 255])
     #scale = float(npz['brightness'])
     size = 5

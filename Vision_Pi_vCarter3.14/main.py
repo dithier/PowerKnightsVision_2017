@@ -16,17 +16,19 @@ import logging
 import datetime
 
 """
-debug accepts values from 0 to 4 where 0 is the least amount of print statements and 4 is the most
+debug accepts values from -1 to 4 where 0 is the least amount of print statements and 4 is the most
+-1: Nothing
 0: New frame, Valid Target
 1: match quality, AR
 2: comments of where we are in the program and status and time for mask and total time
 3: timing comments
 4: timing comments for BFR
 """
-debug = 0
+debug = -1
 
 def run(table, image_orig, validCount, i, debug):
-    print "STARTING TO EVALUATE NEW FRAME"
+    if debug >= 0:
+        print "STARTING TO EVALUATE NEW FRAME"
     if i < 4:
         directory = '/home/pi/production/'
         filename = directory + 'original' + str(i) + '.jpg'
@@ -36,7 +38,7 @@ def run(table, image_orig, validCount, i, debug):
     flag = 0
   
     #try: 
-    startMask = datetime.datetime.now()   
+    #startMask = datetime.datetime.now()   
     mask = FT.processImage(image_orig)
     if debug >= 2 :
         endMask = datetime.datetime.now()
@@ -53,7 +55,7 @@ def run(table, image_orig, validCount, i, debug):
     
     if flag == 0:
         # try:
-        startValid = datetime.datetime.now()
+        #startValid = datetime.datetime.now()
         valid, validContours, validRect_coor, BFR_img, validHull = VT.findValidTarget(image_orig, mask, debug)
         if debug >= 3:        
             endValid = datetime.datetime.now()
@@ -65,20 +67,22 @@ def run(table, image_orig, validCount, i, debug):
             #valid = False
     
     #final_image = MI.drawCrossHairs(final_image)
-    startCalc = datetime.datetime.now()
+    #startCalc = datetime.datetime.now()
     if valid:
         try:
             cx1, cy1 = IC.findCenter(validContours[0])
             cx2, cy2 = IC.findCenter(validContours[1])
             
             angle = IC.findAnglePeg(final_image, cx1, cx2)
+            if debug >= 0:
+                print "Angle: " + str(angle)
             #distance = IC.findDistancePeg(final_image, validRect_coor)
             validCount += 1
             
             #cv2.drawContours(final_image, validContours, -1, (0, 255, 0), -1)
             #final_image = MI.drawLine2Target(final_image, cx, cy)
         except:
-            print "Error with valid target"
+            #print "Error with valid target"
             angle = 100
             #distance = 0
     else:
@@ -89,7 +93,7 @@ def run(table, image_orig, validCount, i, debug):
         totalCalc = endCalc - startCalc
         print "Time to calculate angle: " + str(totalCalc.microseconds)
         
-    startTable = datetime.datetime.now()
+    #startTable = datetime.datetime.now()
     FT.send2Table(table, validCount, angle)
     if debug >= 3:
         endTable = datetime.datetime.now()
@@ -116,7 +120,8 @@ try:
     
     sd = NetworkTable.getTable("Camera")
 except:
-    print "error connecting to table"
+    #print "error connecting to table"
+    pass
 
 validCount = 0
 i = 0
@@ -126,33 +131,34 @@ i = 0
 #directory = 'C:/Users/Ithier/Documents/FIRST/2017/Pics/WPI/'
 directory2 = 'C:/Users/Ithier/Documents/FIRST/2017/PowerKnightsVision_2017/Vision_Pi_vCarter3.14/'
 #pic = 'darkergreen_3.18.png'
-pic = 'ultraGreen_3.18.png'
+pic = 'black.png'
 picture = directory2 + pic
 
 img = cv2.imread(picture)
 """
 
 #"""
-print 1
+#print 1
 
 while 1:
-    print 2
+    #print 2
     while video.isOpened():
-        print 3
+        #print 3
         ret, frame = video.read()
         #cv2.imshow('Camera Frame', frame)
         #cv2.waitKey(0)
                 
         #frame = img
-        if ret and not (frame == None):
-            print 4
-            start = datetime.datetime.now()
+        if ret:
+            #print 4
+            #start = datetime.datetime.now()
             image_orig, mask, final_image, validCount, i = run (sd, frame, validCount, i, debug)
             if debug >= 2:
                 end = datetime.datetime.now()
                 total = end - start
                 print "Time of total process: " + str(total.microseconds)
-            print "Valid Count: " + str(validCount)
+                if debug >= 0: 
+                    print "Valid Count: " + str(validCount)
 
 """
 start = datetime.datetime.now()
@@ -166,7 +172,7 @@ cv2.imshow("orig", image_orig)
 cv2.imshow("mask", mask)
 cv2.imshow("final", final_img)
 cv2.waitKey(0)
-"""
+#"""
 
 
 

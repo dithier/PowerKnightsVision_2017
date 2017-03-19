@@ -16,8 +16,9 @@ import datetime
 values = np.load('rectangleCNT.npz')
 rectangleCNT = values['contour']
 def isValidShape(hull, debug):
-    startS = datetime.datetime.now()
-    matchThreshold = .264
+    #startS = datetime.datetime.now()
+    #matchThreshold = .264
+    matchThreshold = 0.282
     global rectangleCNT
     
     #check quality of shape match
@@ -33,7 +34,7 @@ def isValidShape(hull, debug):
     
 def isValidARPeg(Rect_coor, debug):
 #Checks rectangles aspect ratio
-    startAR = datetime.datetime.now()
+    #startAR = datetime.datetime.now()
     #minAR = .32
     minAR = .27
     #maxAR = .493
@@ -57,6 +58,16 @@ def isValidARPeg(Rect_coor, debug):
         totalAR = endAR - startAR
         print "Time to calc AR: " + str(totalAR.microseconds)
     return (minAR < AR < maxAR)
+"""    
+def isAreaValid(hull, debug):
+    area = cv2.contourArea(hull)
+    if debug >= 1:
+        print "Area: " + str(area)
+    if area < 250:
+        return False
+    else:
+        return True
+"""
     
     
 def checkCornerDist(Rect_coor1, Rect_coor2):
@@ -78,7 +89,7 @@ def checkCornerDist(Rect_coor1, Rect_coor2):
     
 def isValid(hull, Rect_coor, debug):
 #Checks contour validity
-    return isValidShape(hull, debug) and isValidARPeg(Rect_coor, debug)
+    return isValidShape(hull, debug) and isValidARPeg(Rect_coor, debug) #and isAreaValid(hull, debug)
     
     
 def zeroVariables(image):
@@ -97,7 +108,7 @@ def findValidTarget(image, img_mask, debug):
     numContours = 10
     
     #take n largest contours sorted by area
-    startC = datetime.datetime.now()
+    #startC = datetime.datetime.now()
     contours, _ = cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
     sortedContours = (sorted(contours, key = lambda contour:cv2.contourArea(contour), reverse = True))[:numContours]
     if debug >= 3:    
@@ -115,7 +126,7 @@ def findValidTarget(image, img_mask, debug):
         if debug >= 2:
             print "GOT INTO SORTEDCONTOURS"
         
-        startBFR = datetime.datetime.now()
+        #startBFR = datetime.datetime.now()
         _, hull, corners, BFR_img = MI.bestFitRect(BFR_img, contour, debug)
         if debug >= 3:
             endBFR = datetime.datetime.now()
@@ -124,7 +135,7 @@ def findValidTarget(image, img_mask, debug):
         
         if len(corners) == 4:
             try:
-                startR = datetime.datetime.now()
+                #startR = datetime.datetime.now()
                 Rect_coor = IC.organizeCorners(corners)
                 if debug >= 3:
                     endR = datetime.datetime.now()
@@ -138,7 +149,7 @@ def findValidTarget(image, img_mask, debug):
         #check validity
         if isValid(hull, Rect_coor, debug):
             if len(validContours) == 1:
-                startCD = datetime.datetime.now()
+                #startCD = datetime.datetime.now()
                 CD = checkCornerDist(Rect_coor, validRect_coor[0])
                 if debug >= 3:
                     endCD = datetime.datetime.now()
@@ -160,7 +171,8 @@ def findValidTarget(image, img_mask, debug):
         
         if len(validContours) == 2:
             valid = True
-            print "2 VALID CONTOURS, VALID TARGET"
+            if debug >= 0:
+                print "2 VALID CONTOURS, VALID TARGET"
             return valid, validContours, validRect_coor, BFR_img, validHull
             
         """
