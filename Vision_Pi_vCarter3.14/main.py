@@ -24,7 +24,9 @@ debug accepts values from -1 to 4 where 0 is the least amount of print statement
 3: timing comments
 4: timing comments for BFR
 """
-debug = -1
+debug = 0
+
+print "Starting program"
 
 def run(table, image_orig, validCount, i, debug):
     if debug >= 0:
@@ -83,10 +85,10 @@ def run(table, image_orig, validCount, i, debug):
             #final_image = MI.drawLine2Target(final_image, cx, cy)
         except:
             #print "Error with valid target"
-            angle = 100
+            angle = 1000
             #distance = 0
     else:
-        angle = 100
+        angle = 1000
         #distance = 0
     if debug >= 3:
         endCalc = datetime.datetime.now()
@@ -144,21 +146,26 @@ while 1:
     #print 2
     while video.isOpened():
         #print 3
-        ret, frame = video.read()
-        #cv2.imshow('Camera Frame', frame)
-        #cv2.waitKey(0)
-                
-        #frame = img
-        if ret:
-            #print 4
-            #start = datetime.datetime.now()
-            image_orig, mask, final_image, validCount, i = run (sd, frame, validCount, i, debug)
-            if debug >= 2:
-                end = datetime.datetime.now()
-                total = end - start
-                print "Time of total process: " + str(total.microseconds)
-                if debug >= 0: 
-                    print "Valid Count: " + str(validCount)
+        try:
+            ret, frame = video.read()
+            #cv2.imshow('Camera Frame', frame)
+            #cv2.waitKey(0)
+                    
+            #frame = img
+            if ret:
+                #print 4
+                #start = datetime.datetime.now()
+                image_orig, mask, final_image, validCount, i = run (sd, frame, validCount, i, debug)
+                if debug >= 2:
+                    end = datetime.datetime.now()
+                    total = end - start
+                    print "Time of total process: " + str(total.microseconds)
+                    if debug >= 0: 
+                        print "Valid Count: " + str(validCount)
+        except:
+            pass
+    video.release()
+    video = cv2.VideoCapture(video_input)
 
 """
 start = datetime.datetime.now()
@@ -172,6 +179,7 @@ cv2.imshow("orig", image_orig)
 cv2.imshow("mask", mask)
 cv2.imshow("final", final_img)
 cv2.waitKey(0)
+cv2.destroyAllWindows
 #"""
 
 
