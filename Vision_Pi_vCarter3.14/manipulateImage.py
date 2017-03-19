@@ -14,7 +14,7 @@ def darkenImage(image, scale):
     darker = (image * scale).astype(np.uint8)
     return darker
     
-def bestFitRect(img_orig, cnt):
+def bestFitRect(img_orig, cnt, debug):
     # Find convex hull
     hull = cv2.convexHull(cnt)
     box = np.int0(hull)
@@ -23,22 +23,25 @@ def bestFitRect(img_orig, cnt):
     corners_img = np.zeros((img_orig.shape[0],img_orig.shape[1],img_orig.shape[2]), np.uint8)
     startD = datetime.datetime.now()
     cv2.drawContours(corners_img, [box], 0, (255,255,255), -1)
-    endD = datetime.datetime.now()
-    totalD = endD - startD
-    print "Time BFR draw contours: " + str(totalD.microseconds) 
+    if debug >= 4:
+        endD = datetime.datetime.now()
+        totalD = endD - startD
+        print "Time BFR draw contours: " + str(totalD.microseconds) 
     startC = datetime.datetime.now()
-    corners_img = cv2.cvtColor(corners_img, cv2.COLOR_BGR2GRAY) 
-    endC = datetime.datetime.now()
-    totalC = endC - startC
-    print "BFR cvtColor: " + str(totalC.microseconds)
+    corners_img = cv2.cvtColor(corners_img, cv2.COLOR_BGR2GRAY)
+    if debug >= 4:
+        endC = datetime.datetime.now()
+        totalC = endC - startC
+        print "BFR cvtColor: " + str(totalC.microseconds)
     
     
     #                                 image, number of corners, quality (0-1), min euclidean dist
     start = datetime.datetime.now()    
     corners = cv2.goodFeaturesToTrack(corners_img, 4, 0.01, 13) # Find coordinates for the four corners    
-    end = datetime.datetime.now()
-    total = end - start
-    print "BFR goodFeaturesToTrack: " + str(total.microseconds)    
+    if debug >= 4:    
+        end = datetime.datetime.now()
+        total = end - start
+        print "BFR goodFeaturesToTrack: " + str(total.microseconds)    
     corners = np.int0(corners)
     
     

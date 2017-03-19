@@ -15,21 +15,23 @@ import datetime
 
 values = np.load('rectangleCNT.npz')
 rectangleCNT = values['contour']
-def isValidShape(hull):
+def isValidShape(hull, debug):
     startS = datetime.datetime.now()
     matchThreshold = .264
     global rectangleCNT
     
     #check quality of shape match
     match_quality = cv2.matchShapes(rectangleCNT, hull, 1, 0.0)
-    print "match quality " + str(match_quality)
-    endS = datetime.datetime.now()
-    totalS = endS - startS
-    print "Time to match shape: " + str(totalS.microseconds)
+    if debug >= 1:
+        print "match quality " + str(match_quality)
+    if debug >= 3:
+        endS = datetime.datetime.now()
+        totalS = endS - startS
+        print "Time to match shape: " + str(totalS.microseconds)
     return (match_quality < matchThreshold)
 
     
-def isValidARPeg(Rect_coor):
+def isValidARPeg(Rect_coor, debug):
 #Checks rectangles aspect ratio
     startAR = datetime.datetime.now()
     #minAR = .32
@@ -48,10 +50,12 @@ def isValidARPeg(Rect_coor):
     if h == 0:
         h = .001
     AR = float(w)/float(h)
-    print "AR " + str(AR)
-    endAR = datetime.datetime.now()
-    totalAR = endAR - startAR
-    print "Time to calc AR: " + str(totalAR.microseconds)
+    if debug >= 1:
+        print "AR " + str(AR)
+    if debug >= 3:
+        endAR = datetime.datetime.now()
+        totalAR = endAR - startAR
+        print "Time to calc AR: " + str(totalAR.microseconds)
     return (minAR < AR < maxAR)
     
     
@@ -72,9 +76,9 @@ def checkCornerDist(Rect_coor1, Rect_coor2):
     return True
 
     
-def isValid(hull, Rect_coor):
+def isValid(hull, Rect_coor, debug):
 #Checks contour validity
-    return isValidShape(hull) and isValidARPeg(Rect_coor)
+    return isValidShape(hull, debug) and isValidARPeg(Rect_coor, debug)
     
     
 def zeroVariables(image):
@@ -84,8 +88,9 @@ def zeroVariables(image):
     return Rect_coor, BFR_img, hull
     
 
-def findValidTarget(image, img_mask):
-    print "started validation"
+def findValidTarget(image, img_mask, debug):
+    if debug >= 2:
+        print "started validation"
     
     BFR_img = np.copy(image)
     mask = np.copy(img_mask)
@@ -95,9 +100,10 @@ def findValidTarget(image, img_mask):
     startC = datetime.datetime.now()
     contours, _ = cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
     sortedContours = (sorted(contours, key = lambda contour:cv2.contourArea(contour), reverse = True))[:numContours]
-    endC = datetime.datetime.now()
-    totalC = endC - startC
-    print "Time to find contours and sort: " + str(totalC.microseconds)
+    if debug >= 3:    
+        endC = datetime.datetime.now()
+        totalC = endC - startC
+        print "Time to find contours and sort: " + str(totalC.microseconds)
     
     #filter invalid contours until 2 valid are found
     validContours = []
@@ -106,50 +112,63 @@ def findValidTarget(image, img_mask):
     valid = False
     for contour in sortedContours:
         #get BFR and corners
-        print "GOT INTO SORTEDCONTOURS"
+        if debug >= 2:
+            print "GOT INTO SORTEDCONTOURS"
         
         startBFR = datetime.datetime.now()
-        _, hull, corners, BFR_img = MI.bestFitRect(BFR_img, contour)
-        endBFR = datetime.datetime.now()
-        totalBFR = endBFR - startBFR
-        print "Time to calc BFR: " + str(totalBFR.microseconds)
+        _, hull, corners, BFR_img = MI.bestFitRect(BFR_img, contour, debug)
+        if debug >= 3:
+            endBFR = datetime.datetime.now()
+            totalBFR = endBFR - startBFR
+            print "Time to calc BFR: " + str(totalBFR.microseconds)
         
         if len(corners) == 4:
             try:
                 startR = datetime.datetime.now()
                 Rect_coor = IC.organizeCorners(corners)
-                endR = datetime.datetime.now()
-                totalR = endR - startR
-                print "Time to organize corners: " + str(totalR.microseconds)
+                if debug >= 3:
+                    endR = datetime.datetime.now()
+                    totalR = endR - startR
+                    print "Time to organize corners: " + str(totalR.microseconds)
             except:
                 continue
         else:
             continue
         
         #check validity
-        if isValid(hull, Rect_coor):
+        if isValid(hull, Rect_coor, debug):
             if len(validContours) == 1:
                 startCD = datetime.datetime.now()
                 CD = checkCornerDist(Rect_coor, validRect_coor[0])
-                endCD = datetime.datetime.now()
-                totalCD = endCD - startCD
-                print "Time for corner dist check: " + str(totalCD.microseconds)
+                if debug >= 3:
+                    endCD = datetime.datetime.now()
+                    totalCD = endCD - startCD
+                    print "Time for corner dist check: " + str(totalCD.microseconds)
                 if not CD:
                     continue
-            print "1 valid contour"
+            if debug >= 2:
+                print "1 valid contour found so far"
                 
             validContours.append(contour)
             validRect_coor.append(Rect_coor)
-            validHull.append(hull)  
-            print "Length of valid contours: " + str(len(validContours))
+            validHull.append(hull) 
+            if debug >= 2:
+                print "Length of valid contours: " + str(len(validContours))
         else:
-            print "contour was not valid"
+            if debug >= 2:
+                print "contour was not valid"
         
         if len(validContours) == 2:
             valid = True
             print "2 VALID CONTOURS, VALID TARGET"
             return valid, validContours, validRect_coor, BFR_img, validHull
-        
-    print "Num of valid contours: " + str(len(validContours))       
+            
+        """
+        if contour == sortedContours[-1] and len(validContours) != 2:
+            print "NO VALID TARGET"
+        """
+
+    if debug >= 2:    
+        print "Num of valid contours: " + str(len(validContours))       
     Rect_coor, BFR_img, hull = zeroVariables(image)
     return valid, validContours, validRect_coor, BFR_img, validHull

@@ -15,9 +15,17 @@ from networktables import NetworkTable
 import logging
 import datetime
 
+"""
+debug accepts values from 0 to 4 where 0 is the least amount of print statements and 4 is the most
+0: New frame, Valid Target
+1: match quality, AR
+2: comments of where we are in the program and status and time for mask and total time
+3: timing comments
+4: timing comments for BFR
+"""
+debug = 0
 
-
-def run(table, image_orig, validCount, i):
+def run(table, image_orig, validCount, i, debug):
     print "STARTING TO EVALUATE NEW FRAME"
     if i < 4:
         directory = '/home/pi/production/'
@@ -30,9 +38,10 @@ def run(table, image_orig, validCount, i):
     #try: 
     startMask = datetime.datetime.now()   
     mask = FT.processImage(image_orig)
-    endMask = datetime.datetime.now()
-    totalMask = endMask - startMask
-    print "Time to make mask: " + str(totalMask.microseconds)
+    if debug >= 2 :
+        endMask = datetime.datetime.now()
+        totalMask = endMask - startMask
+        print "Time to make mask: " + str(totalMask.microseconds)
     
     if i < 4:
         filename = directory + 'mask' + str(i) + '.jpg'
@@ -45,10 +54,11 @@ def run(table, image_orig, validCount, i):
     if flag == 0:
         # try:
         startValid = datetime.datetime.now()
-        valid, validContours, validRect_coor, BFR_img, validHull = VT.findValidTarget(image_orig, mask)
-        endValid = datetime.datetime.now()
-        totalValid = endValid - startValid
-        print "Time for findValidTarget: " + str(totalValid.microseconds)        
+        valid, validContours, validRect_coor, BFR_img, validHull = VT.findValidTarget(image_orig, mask, debug)
+        if debug >= 3:        
+            endValid = datetime.datetime.now()
+            totalValid = endValid - startValid
+            print "Time for findValidTarget: " + str(totalValid.microseconds)        
         # except:
             #print "error processing image"
             #flag = 1
@@ -74,15 +84,17 @@ def run(table, image_orig, validCount, i):
     else:
         angle = 100
         #distance = 0
-    endCalc = datetime.datetime.now()
-    totalCalc = endCalc - startCalc
-    print "Time to calculate angle: " + str(totalCalc.microseconds)
+    if debug >= 3:
+        endCalc = datetime.datetime.now()
+        totalCalc = endCalc - startCalc
+        print "Time to calculate angle: " + str(totalCalc.microseconds)
         
     startTable = datetime.datetime.now()
     FT.send2Table(table, validCount, angle)
-    endTable = datetime.datetime.now()
-    totalTable = endTable - startTable
-    print "Time sent to table: " + str(totalTable.microseconds)
+    if debug >= 3:
+        endTable = datetime.datetime.now()
+        totalTable = endTable - startTable
+        print "Time sent to table: " + str(totalTable.microseconds)
     
     return image_orig, mask, final_image, validCount, i
     
@@ -109,17 +121,18 @@ except:
 validCount = 0
 i = 0
 
-#"""
+"""
 #directory = 'C:/Users/Ithier/Documents/FIRST/2017/Pics/Pics Set 3.3/2ft/'
 #directory = 'C:/Users/Ithier/Documents/FIRST/2017/Pics/WPI/'
 directory2 = 'C:/Users/Ithier/Documents/FIRST/2017/PowerKnightsVision_2017/Vision_Pi_vCarter3.14/'
-pic = 'darkergreen_3.18.png'
+#pic = 'darkergreen_3.18.png'
+pic = 'ultraGreen_3.18.png'
 picture = directory2 + pic
 
 img = cv2.imread(picture)
-#"""
-
 """
+
+#"""
 print 1
 
 while 1:
@@ -134,24 +147,26 @@ while 1:
         if ret and not (frame == None):
             print 4
             start = datetime.datetime.now()
-            image_orig, mask, final_image, validCount, i = run (sd, frame, npz, validCount, i)
-            end = datetime.datetime.now()
-            total = end - start
-            print "Time of total process: " + str(total.microseconds)
+            image_orig, mask, final_image, validCount, i = run (sd, frame, validCount, i, debug)
+            if debug >= 2:
+                end = datetime.datetime.now()
+                total = end - start
+                print "Time of total process: " + str(total.microseconds)
             print "Valid Count: " + str(validCount)
 
 """
 start = datetime.datetime.now()
-image_orig, mask, final_img, validCount, i = run(sd, img, 0, i)
-end = datetime.datetime.now()
-totalTime = end - start
-
-print "Total time: " + str(totalTime.microseconds)
+image_orig, mask, final_img, validCount, i = run(sd, img, 0, i, debug)
+if debug >= 2:
+    end = datetime.datetime.now()
+    totalTime = end - start
+    print "Total time: " + str(totalTime.microseconds)
+    
 cv2.imshow("orig", image_orig)
 cv2.imshow("mask", mask)
 cv2.imshow("final", final_img)
 cv2.waitKey(0)
-#"""
+"""
 
 
 
