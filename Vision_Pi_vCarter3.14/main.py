@@ -163,7 +163,7 @@ while 1:
                     if debug >= 0: 
                         print "Valid Count: " + str(validCount)
         except:
-            continue
+            pass
     video.release()
     video = cv2.VideoCapture(video_input)
 
