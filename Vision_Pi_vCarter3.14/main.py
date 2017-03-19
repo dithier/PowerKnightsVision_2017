@@ -17,20 +17,19 @@ import datetime
 
 
 
-def run(table, image_orig, npz_file, validCount, i):
+def run(table, image_orig, validCount, i):
     print "STARTING TO EVALUATE NEW FRAME"
     if i < 4:
         directory = '/home/pi/production/'
         filename = directory + 'original' + str(i) + '.jpg'
         cv2.imwrite(filename, image_orig)    
-    npz = np.load(npz_file)
     final_image = np.copy(image_orig)
     
     flag = 0
   
     #try: 
     startMask = datetime.datetime.now()   
-    mask = FT.processImage(image_orig, npz)
+    mask = FT.processImage(image_orig)
     endMask = datetime.datetime.now()
     totalMask = endMask - startMask
     print "Time to make mask: " + str(totalMask.microseconds)
@@ -88,7 +87,7 @@ def run(table, image_orig, npz_file, validCount, i):
     return image_orig, mask, final_image, validCount, i
     
 
-npz = 'imageValues_3.18newer.npz'#directory of npz file
+#npz = 'imageValues_3.18.npz'#directory of npz file
 
 #video_input = 'http://127.0.0.1:1180/?action=stream?dummy=param.mjpg'
 video_input = 'http://10.5.1.160:1180/?action=stream?dummy=param.mjpg'
@@ -110,7 +109,7 @@ except:
 validCount = 0
 i = 0
 
-"""
+#"""
 #directory = 'C:/Users/Ithier/Documents/FIRST/2017/Pics/Pics Set 3.3/2ft/'
 #directory = 'C:/Users/Ithier/Documents/FIRST/2017/Pics/WPI/'
 directory2 = 'C:/Users/Ithier/Documents/FIRST/2017/PowerKnightsVision_2017/Vision_Pi_vCarter3.14/'
@@ -118,9 +117,9 @@ pic = 'darkergreen_3.18.png'
 picture = directory2 + pic
 
 img = cv2.imread(picture)
-"""
-
 #"""
+
+"""
 print 1
 
 while 1:
@@ -143,7 +142,7 @@ while 1:
 
 """
 start = datetime.datetime.now()
-image_orig, mask, final_img, validCount, i = run(sd, img, npz, 0, i)
+image_orig, mask, final_img, validCount, i = run(sd, img, 0, i)
 end = datetime.datetime.now()
 totalTime = end - start
 
@@ -152,7 +151,7 @@ cv2.imshow("orig", image_orig)
 cv2.imshow("mask", mask)
 cv2.imshow("final", final_img)
 cv2.waitKey(0)
-"""
+#"""
 
 
 

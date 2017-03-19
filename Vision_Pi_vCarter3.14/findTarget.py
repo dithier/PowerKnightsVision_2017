@@ -6,20 +6,21 @@ Created on Wed Jan 25 20:09:47 2017
 @author: christian
 """
 import manipulateImage as MI
+import numpy as np
 
 
 #def calibrateVision(npzFile)
 
 
-def processImage(image, npz):
+def processImage(image):
 #get all the data findValidTarget needs
 
 #darken
 #convert to hsv
 #hsv filter
 #erode
-    minimum = npz['lower']
-    maximum = npz['upper']
+    minimum = np.array([60, 0, 12])
+    maximum = np.array([150, 255, 255])
     #scale = float(npz['brightness'])
     size = 5
     #darker = MI.darkenImage(image, scale)
